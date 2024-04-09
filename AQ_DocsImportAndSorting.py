@@ -61,6 +61,7 @@ if __name__ == "__main__":
   from docx.oxml.text.paragraph import CT_P
   from docx.text.paragraph import Paragraph
   from docx.oxml.table import CT_Tbl
+  import json
   #opening the document as a docx.Document object
   doc = Document('14.6_ Divine Magic (Orus).docx')
   # creating empty lists to one day combine into a dictionary
@@ -87,3 +88,4 @@ if __name__ == "__main__":
 
   # next steps is to do this for every spell document and make sure there is no errors then combine them into a big dictionary so bigDict['Orus']['Love']['1 - Concern'] (- not –)
   print(docSpellDict['Hate']['10 – Malevolence']) # currently an issue is present where – is present in spell names not -. They may look similiar but not the same
+  print(json.dumps(docSpellDict, indent=4))
