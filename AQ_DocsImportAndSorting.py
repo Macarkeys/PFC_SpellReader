@@ -87,5 +87,5 @@ if __name__ == "__main__":
     docSpellDict[spellGroupTitles[i]] = spellGroups[i]
 
   # next steps is to do this for every spell document and make sure there is no errors then combine them into a big dictionary so bigDict['Orus']['Love']['1 - Concern'] (- not –)
-  print(docSpellDict['Hate']['10 – Malevolence']) # currently an issue is present where – is present in spell names not -. They may look similiar but not the same
+  #print(docSpellDict['Hate']['10 – Malevolence']) # currently an issue is present where – is present in spell names not -. They may look similiar but not the same
   print(json.dumps(docSpellDict, indent=4))
