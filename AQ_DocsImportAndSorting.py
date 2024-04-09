@@ -55,19 +55,12 @@ def organizeTable(docTable):
   SpellTable = getSpellDicts(SpellTable)
   return SpellTable
 
-if __name__ == "__main__":
-  from docx import Document
-  from docx.table import Table
-  from docx.oxml.text.paragraph import CT_P
-  from docx.text.paragraph import Paragraph
-  from docx.oxml.table import CT_Tbl
-  import json
-  #opening the document as a docx.Document object
-  doc = Document('14.6_ Divine Magic (Orus).docx')
+def getDocsSpells(doc):
   # creating empty lists to one day combine into a dictionary
   spellGroupTitles = []
   spellGroups = []
   tableing = [False, -1]
+  docSpellName = None
   for element in doc.element.body:
     # Finds the headers of the spell groups and signifies when to start collecting tables
     if isinstance(element, CT_P):
@@ -76,16 +69,33 @@ if __name__ == "__main__":
         tableing[1] += 1
         spellGroupTitles.append(element.text)
         spellGroups.append({})
+      if element.style == 'Heading2' and not docSpellName:
+        docSpellName = element.text
     # checks if element is a table, then accesses it as a table (?!?!), then combines the dictionary already present (empty dict if first) with the new one
     if isinstance(element, CT_Tbl) and tableing[0]:
       table = Table(element, doc)
-      spellGroups[tableing[1]] = {**spellGroups[tableing[1]], **organizeTable(table)}
-
+      if len(table._cells) > 10:
+        spellGroups[tableing[1]] = {**spellGroups[tableing[1]], **organizeTable(table)}
   # Creating a dictionary from the spell group titles (keys) and spell group dictionaries (values)
   docSpellDict = {}
   for i in range(len(spellGroupTitles)):
     docSpellDict[spellGroupTitles[i]] = spellGroups[i]
+  return docSpellDict, docSpellName
 
+if __name__ == "__main__":
+  from docx import Document
+  from docx.table import Table
+  from docx.oxml.text.paragraph import CT_P
+  from docx.text.paragraph import Paragraph
+  from docx.oxml.table import CT_Tbl
+  import json
+  import os
+  #opening the document as a docx.Document object
+  allSpells = {}
+  for file in os.listdir('spellFolder'):
+    docSpell = getDocsSpells(Document("spellFolder\\"+file))
+    allSpells[docSpell[1]] = docSpell[0]
   # next steps is to do this for every spell document and make sure there is no errors then combine them into a big dictionary so bigDict['Orus']['Love']['1 - Concern'] (- not –)
   #print(docSpellDict['Hate']['10 – Malevolence']) # currently an issue is present where – is present in spell names not -. They may look similiar but not the same
-  print(json.dumps(docSpellDict, indent=4))
+  with open('pfc-elemental-divine-spells.json', 'w') as outfile:
+    json.dump(allSpells, outfile, indent=4)
