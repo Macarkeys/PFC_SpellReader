@@ -69,7 +69,7 @@ def getDocsSpells(doc):
         tableing[1] += 1
         spellGroupTitles.append(element.text)
         spellGroups.append({})
-      if element.style == 'Heading2' and not docSpellName:
+      if (element.style == 'Heading2' or element.style == 'Title') and not docSpellName:
         docSpellName = element.text
     # checks if element is a table, then accesses it as a table (?!?!), then combines the dictionary already present (empty dict if first) with the new one
     if isinstance(element, CT_Tbl) and tableing[0]:
@@ -97,5 +97,5 @@ if __name__ == "__main__":
     allSpells[docSpell[1]] = docSpell[0]
   # next steps is to do this for every spell document and make sure there is no errors then combine them into a big dictionary so bigDict['Orus']['Love']['1 - Concern'] (- not –)
   #print(docSpellDict['Hate']['10 – Malevolence']) # currently an issue is present where – is present in spell names not -. They may look similiar but not the same
-  with open('pfc-elemental-divine-spells.json', 'w') as outfile:
+  with open('pfc-elemental-divine-psionic-spells.json', 'w') as outfile:
     json.dump(allSpells, outfile, indent=4)
