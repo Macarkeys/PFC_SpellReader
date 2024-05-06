@@ -11,8 +11,11 @@ Completed 4. Spell description is going to be the last thing added as 'Descripti
 def collatPara(paragraphList):
   strPara = ''
   for i in paragraphList:
-    strPara += i.text
+    strPara += cleanText(i.text)
   return strPara
+def cleanText(textInput: str):
+  textInput = textInput.strip()
+  return textInput
 # Cleans the lists in spell table and preps. Removes the little header row and changes the empty row at bottom of every spell to be the description, removing the third column.
 def cleanSpellTable(SpellTable):
   cleanedSpells = [[],[]]
@@ -20,8 +23,8 @@ def cleanSpellTable(SpellTable):
     if (SpellTable[0][i],SpellTable[1][i]) != ('','') and ('Description' not in SpellTable[2][i]):
       cleanedSpells[0].append(SpellTable[0][i])
       cleanedSpells[1].append(SpellTable[1][i])
-    elif SpellTable[0][i].strip() == '':
-      cleanedSpells[0].append('Description:')
+    elif SpellTable[0][i].strip() == '' and SpellTable[0][i-1].strip() != '':
+      cleanedSpells[0].append('Description')
       cleanedSpells[1].append(SpellTable[2][i-6])
   return cleanedSpells
 # Gets the indexes of each spell in each spell table
