@@ -20,7 +20,7 @@ def cleanText(textInput: str):
 def cleanSpellTable(SpellTable):
   cleanedSpells = [[],[]]
   for i in range(len(SpellTable[0])):
-    if (SpellTable[0][i],SpellTable[1][i]) != ('','') and ('Description' not in SpellTable[2][i]):
+    if (SpellTable[0][i],SpellTable[1][i]) != ('','') and ('Description' not in SpellTable[2][i].strip()):
       cleanedSpells[0].append(SpellTable[0][i])
       cleanedSpells[1].append(SpellTable[1][i])
     elif SpellTable[0][i].strip() == '' and SpellTable[0][i-1].strip() != '':
@@ -28,22 +28,31 @@ def cleanSpellTable(SpellTable):
       cleanedSpells[1].append(SpellTable[2][i-6])
   return cleanedSpells
 # Gets the indexes of each spell in each spell table
+# reform following two functions to not take spells and their dictionaries by 8 but until they reach the text spell title
 def getSpellIndexes(SpellTable):
   spellIndex = []
+  x = 0
   for i in range(len(SpellTable[0])):
+    if '\u2013' in SpellTable[0][i] and '\u2013' in SpellTable[1][i]:
+      if x != 0:
+        spellIndex.append((i,x))
+      x = 0
+    x += 1
+  """for i in range(len(SpellTable[0])):
     if i % 8 == 0:
       spellIndex.append(i)
+      print(i)"""
   return spellIndex
 # gets the spells for that spell table as a dictionary
 def getSpellDicts(SpellTable):
   spellListDict = {}
   for i in getSpellIndexes(SpellTable):
-    keyL = SpellTable[0][i+1:i+8]
-    valL = SpellTable[1][i+1:i+8]
+    keyL = SpellTable[0][i[0]+1:i[0]+1+i[1]]
+    valL = SpellTable[1][i[0]+1:i[0]+1+i[1]]
     spellDict = {}
     for j in range(len(keyL)):
       spellDict[keyL[j]] = valL[j]
-    spellListDict[SpellTable[0][i]] = spellDict
+    spellListDict[SpellTable[0][i[0]]] = spellDict
   return spellListDict
 # This is the main function that is taking in a table and outputing a fully cleaned and organized spell table as a dictionary. Ex: SpellTable['1 - Concern']
 def organizeTable(docTable):
