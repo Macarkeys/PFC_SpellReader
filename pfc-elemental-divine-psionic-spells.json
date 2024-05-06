@@ -12089,10 +12089,19 @@
                 "Target:": "caster",
                 "Duration:": "instantaneous",
                 "Area:": "self",
-                "Effect:": "receive hint",
-                "5 \u2013 Portent": "5 \u2013 Portent"
+                "Effect:": "receive hint"
             },
-            "Time to Cast:": {
+            "5 \u2013 Portent": {
+                "Time to Cast:": "1 minute",
+                "Resist Check:": "none",
+                "Target:": "caster",
+                "Duration:": "2 + 1/F hours",
+                "Area:": "self",
+                "Effect:": "divine other\u2019s results",
+                "Description": "Roll a d6, and record this result. The caster can replace any d6 roll for skill check, stat check, resist check, unconsciousness roll, etc. made by the caster or a creature within 60 feet of the caster with this foretelling roll. The caster must choose to do so as a free action before the roll is made or as a reaction after the roll is made.Each fortelling roll can be used only once. Once the duration elapses, the caster loses any unused foretelling rolls.At higher finesse: for each 2 finesses, the caster can roll an additional foretelling d6. They follow the same rules as above.An individual may not have more than one \u201cPortent\u201d effect active at once. The caster must preemptively drop this effect before the duration elapses to cast a different portent spell."
+            },
+            "6 \u2013 Extract Truth": {
+                "Time to Cast:": "1 round",
                 "Resist Check:": "4d6 vs WIL negates",
                 "Target:": "touch",
                 "Duration:": "1 + 1/F questions",

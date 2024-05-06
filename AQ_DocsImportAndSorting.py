@@ -32,23 +32,22 @@ def cleanSpellTable(SpellTable):
 def getSpellIndexes(SpellTable):
   spellIndex = []
   x = 0
+  i = 0 
   for i in range(len(SpellTable[0])):
-    if '\u2013' in SpellTable[0][i] and '\u2013' in SpellTable[1][i]:
+    if '\u2013' in SpellTable[0][i] or '\u002D' in SpellTable[0][i]:
+      print(SpellTable[0][i])
       if x != 0:
-        spellIndex.append((i,x))
+        spellIndex.append((i-x,x))
       x = 0
     x += 1
-  """for i in range(len(SpellTable[0])):
-    if i % 8 == 0:
-      spellIndex.append(i)
-      print(i)"""
+  spellIndex.append((len(SpellTable[0])-x, x))
   return spellIndex
 # gets the spells for that spell table as a dictionary
 def getSpellDicts(SpellTable):
   spellListDict = {}
   for i in getSpellIndexes(SpellTable):
-    keyL = SpellTable[0][i[0]+1:i[0]+1+i[1]]
-    valL = SpellTable[1][i[0]+1:i[0]+1+i[1]]
+    keyL = SpellTable[0][i[0]+1:i[0]+i[1]]
+    valL = SpellTable[1][i[0]+1:i[0]+i[1]]
     spellDict = {}
     for j in range(len(keyL)):
       spellDict[keyL[j]] = valL[j]
